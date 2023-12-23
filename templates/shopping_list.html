@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Список Продуктов</title>
+  <!-- Подключение Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <!-- Подключение Bootstrap JS и jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="{{ url_for('static', filename='js/calendar_p.js') }}"></script>
+
+
+  <script>
+
+    // Получаем данные из localStorage
+    var breakfastMenu = JSON.parse(localStorage.getItem('breakfastMenu'));
+    var lunchMenu = JSON.parse(localStorage.getItem('lunchMenu'));
+    var dinnerMenu = JSON.parse(localStorage.getItem('dinnerMenu'));
+    var snackMenu = JSON.parse(localStorage.getItem('snackMenu'));
+    
+    if (!breakfastMenu || !lunchMenu || !dinnerMenu || !snackMenu) {
+      alert("Меню отсутствует. Сгенерируйте его на главной странице.");
+    } 
+    else {
+      
+      // Объединяем данные в объект
+    var allMenu = { 
+      breakfastMenu: breakfastMenu, 
+      lunchMenu: lunchMenu, 
+      dinnerMenu: dinnerMenu, 
+      snackMenu: snackMenu
+    };
+    
+    // Отправляем данные на сервер Flask
+    fetch('/shopping_list', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(allMenu)
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+    
+    
+    
+    }
+    
+    </script>
+
+
+
+
+    
+</head>
+<body>
+  <div class="container">
+    <div class="page-title">Продукты</div>
+
+    <div class="weeks">
+      <button type="button" class="btn btn-outline-success" onclick="showWeek(1)" data-week="1">Неделя 1</button>
+      <button type="button" class="btn btn-outline-success" onclick="showWeek(2)" data-week="2">Неделя 2</button>
+    </div>
+
+    <div class="week1">
+        <div class="weekdays" role="group">
+            <button type="button" class="btn btn-outline-success" onclick="showDay(1)" data-day="1">Пн1</button>
+            <button type="button" class="btn btn-outline-success" onclick="showDay(2)" data-day="2">Вт1</button>
+            <button type="button" class="btn btn-outline-success" onclick="showDay(3)" data-day="3">Ср1</button>
+            <button type="button" class="btn btn-outline-success" onclick="showDay(4)" data-day="4">Чт1</button>
+            <button type="button" class="btn btn-outline-success" onclick="showDay(5)" data-day="5">Пт1</button>
+            <button type="button" class="btn btn-outline-success" onclick="showDay(6)" data-day="6">Сб1</button>
+            <button type="button" class="btn btn-outline-success" onclick="showDay(7)" data-day="7">Вс1</button>
+          </div>
+    </div>
+
+    <div class="week2" style="display: none;">
+        <div class="weekdays" role="group">
+            <button type="button" class="btn btn-outline-success" onclick="showDay(8)" data-day="1">Пн2</button>
+            <button type="button" class="btn btn-outline-success" onclick="showDay(9)" data-day="2">Вт2</button>
+            <button type="button" class="btn btn-outline-success" onclick="showDay(10)" data-day="3">Ср2</button>
+            <button type="button" class="btn btn-outline-success" onclick="showDay(11)" data-day="4">Чт2</button>
+            <button type="button" class="btn btn-outline-success" onclick="showDay(12)" data-day="5">Пт2</button>
+            <button type="button" class="btn btn-outline-success" onclick="showDay(13)" data-day="6">Сб2</button>
+            <button type="button" class="btn btn-outline-success" onclick="showDay(14)" data-day="7">Вс2</button>
+          </div>
+      </div>
+      
+<!-- Список продуктов для каждого дня недели -->
+<div class="product-list">
+   
+    <div id="day1" class="day" style="display: none;">
+      <ul class="product-item">
+        <li><input type="checkbox"> продукт 1</li>
+      </ul>
+    </div>
+    
+    <div id="day2" class="day" style="display: none;">
+        <ul class="product-item">
+          <li><input type="checkbox"> продукт 2</li>
+        </ul>
+      </div>
+    
+      <div id="day3" class="day" style="display: none;">
+        <ul class="product-item">
+          <li><input type="checkbox"> Продукт 3</li>
+        </ul>
+      </div>
+
+      <div id="day4" class="day" style="display: none;">
+        <ul class="product-item">
+          <li><input type="checkbox"> Продукт 4</li>
+        </ul>
+      </div>
+
+      <div id="day5" class="day" style="display: none;">
+        <ul class="product-item">
+          <li><input type="checkbox"> Продукт 5</li>
+        </ul>
+      </div>
+
+      <div id="day6" class="day" style="display: none;">
+        <ul class="product-item">
+          <li><input type="checkbox"> Продукт 6</li>
+        </ul>
+      </div>
+
+      <div id="day7" class="day" style="display: none;">
+        <ul class="product-item">
+          <li><input type="checkbox"> Продукт 7</li>
+        </ul>
+      </div>
+
+      <div id="day8" class="day" style="display: none;">
+        <ul class="product-item">
+          <li><input type="checkbox"> Продукт8</li>
+        </ul>
+      </div>
+
+      <div id="day9" class="day" style="display: none;">
+        <ul class="product-item">
+          <li><input type="checkbox"> Продукт9</li>
+        </ul>
+      </div>
+
+      <div id="day10" class="day" style="display: none;">
+        <ul class="product-item">
+          <li><input type="checkbox"> Продукт10</li>
+        </ul>
+      </div>
+
+      <div id="day11" class="day" style="display: none;">
+        <ul class="product-item">
+          <li><input type="checkbox"> Продукт11</li>
+        </ul>
+      </div>
+
+      <div id="day12" class="day" style="display: none;">
+        <ul class="product-item">
+          <li><input type="checkbox"> Продукт567</li>
+        </ul>
+      </div>
+
+      <div id="day13" class="day" style="display: none;">
+        <ul class="product-item">
+          <li><input type="checkbox"> Продукт13</li>
+        </ul>
+      </div>
+
+      <div id="day14" class="day" style="display: none;">
+        <ul class="product-item">
+          <li><input type="checkbox"> Продукт17</li>
+        </ul>
+      </div>
+
+  </div>
+</div>
+
+    </div>
+  </div>
+
+  <a href="{{ url_for('main_screen') }}" class="btn btn-primary rounded-circle home-button"><i class="fas fa-home"></i></a>
+
+
+
+</body>
+</html>

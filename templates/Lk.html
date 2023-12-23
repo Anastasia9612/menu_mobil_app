@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="styles.css" rel="stylesheet">
+
+  <title>Личный кабинет</title>
+</head>
+<body>
+
+<div class="container mt-4">
+
+  <div class="page-title" id="topBottom">Личный кабинет</div>
+
+  <div class="row">
+    <div class="lkBtn">
+      <a href="menu.html" class="btn btn-outline-success">Меню на неделю</a>
+    </div>
+    <div class="lkBtn">
+      <a href="product2.html" class="btn btn-outline-success">Список покупок</a>
+    </div>
+
+
+
+    <div class="lkBtn" style="margin-top: 30px;" >
+      <button id="generateMenuBtn" class="btn btn-outline-success">Сгенерировать новое меню</button>
+    </div>
+
+    <div class="lkBtn">
+      <button id="userData" class="btn btn-outline-success">Редактировать данные</button>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+
+<script>
+ 
+  document.getElementById('generateMenuBtn').addEventListener('click', function() {
+    // Предположим, что данные для завтрака, обеда и ужина приходят в переменной data
+    var data = [
+      [(5664, 'Пицца '), (6188, 'авокадо')],
+      [(5664, 'Пицца с колбасой и оливками'), (6188, 'Азиатский салат с апельсином, шпинатом и авокадо')],
+      [(5664, 'Пицца с колбасой и оливками'), (6188, 'Азиатский салат с апельсином, шпинатом и авокадо')],
+      // Данные для обеда и ужина аналогично
+    ];
+
+    // Очищение localStorage
+    //localStorage.removeItem('breakfastMenu');
+   // localStorage.removeItem('lunchMenu');
+   // localStorage.removeItem('dinnerMenu');
+
+
+    // Сохранение данных в localStorage
+    //localStorage.setItem('breakfastMenu', JSON.stringify(data[0]));
+    //localStorage.setItem('lunchMenu', JSON.stringify(data[1]));
+    //localStorage.setItem('dinnerMenu', JSON.stringify(data[2]));
+
+    // Получение и вывод данных в консоль
+    //console.log('Breakfast Menu:', JSON.parse(localStorage.getItem('breakfastMenu'))[1]);
+    //console.log('Lunch Menu:', JSON.parse(localStorage.getItem('lunchMenu')));
+    //console.log('Dinner Menu:', JSON.parse(localStorage.getItem('dinnerMenu')));
+    console.log('forbiddenProducts:', JSON.parse(localStorage.getItem('forbiddenProducts')));
+    console.log('peopleCount:', JSON.parse(localStorage.getItem('peopleCount')));
+  });
+</script>
+
+</body>
+</html>

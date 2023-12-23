@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Table Data
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </title>
+</head>
+<body>
+
+    <h1>Введите текст и отправьте на сервер Flask</h1>
+    <form id="textForm">
+        <input type="text" name="user_text" id="userText">
+        <input type="button" value="Отправить" onclick="sendData()">
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        function sendData() {
+            var userText = document.getElementById('userText').value;
+
+            $.ajax({
+                type: 'POST',
+                url: '/process_text',  // отправляем запрос по правильному адресу
+                data: {user_text: userText},
+                success: function(response) {
+                    $('#result').text("Данные успешно получены");
+                }
+            });
+        }
+    </script>
+
+
+    <table>
+        <thead>
+            <tr>
+                {% for col in columns %}
+                    <th>{{ col }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+                <tr>
+                    {% for d in row %}
+                        <td>{{ d }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

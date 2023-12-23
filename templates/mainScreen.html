@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+  <title>Личный кабинет </title>
+
+  <style>
+    .hidden {
+      display: none;
+    }
+  </style>
+
+
+
+<script>
+  // Получение и вывод данных в консоль
+console.log('Breakfast Menu:', JSON.parse(localStorage.getItem('breakfastMenu')));
+console.log('Lunch Menu:', JSON.parse(localStorage.getItem('lunchMenu')));
+console.log('Dinner Menu:', JSON.parse(localStorage.getItem('dinnerMenu')));
+console.log('Dinner Menu:', JSON.parse(localStorage.getItem('snackMenu')));
+</script>
+</head>
+<body>
+
+
+ 
+<div class="container mt-4">
+
+  <div class="page-title text-center" id="topBottom">Личный кабинет</div>
+
+  <div class="row justify-content-center">
+    <div class="lkBtn">
+      <a href="{{ url_for('menu') }}" class="btn btn-outline-success">Меню на неделю</a>
+    </div>
+    <div class="lkBtn">
+      <a href="{{ url_for('shopping_list') }}" class="btn btn-outline-success">Список покупок</a>
+    </div>
+
+    <div class="lkBtn" style="margin-top: 30px;">
+      <button id="generateMenuBtn" class="btn btn-outline-success">Сгенерировать новое меню</button>
+    </div>
+
+    <div class="lkBtn">
+      <button id="userData" class="btn btn-outline-success" onclick="toggleEdit()">Редактировать данные</button>
+    </div>
+
+    <div id="editFields" class="mt-3 hidden text-center">
+        <button class="btn btn-success mt-2" id = "saveBtn">Сохранить</button>
+        <div class="form-group">
+            <label for="peopleInput" style="float: left; margin-top: 30px;">Количество людей:</label>
+            <input type="number" id="peopleInput" class="form-control" style="width: 70px; float: left; margin-top: 30px;" min="1" max="10" value="1">
+          </div>
+      <div class="form-group">
+        <label for="textInput">Добавить запрещенные продукты </label>
+        <button id="addProductBtn" class="btn btn-success" onclick="addNewTextField()">+</button>
+      </div>
+
+      
+    </div>
+  </div>
+
+</div>
+
+
+<script>
+  function toggleEdit() {
+    document.getElementById('editFields').classList.toggle('hidden');
+  }
+
+
+  function addNewTextField() {
+  var inputs = document.querySelectorAll('#editFields input[type="text"]');
+  var lastInput = inputs[inputs.length - 1];
+  if (!lastInput || lastInput.value !== '') {
+    var newInput = document.createElement('input');
+    newInput.type = 'text';
+    newInput.className = 'form-control mt-2';
+    newInput.placeholder = 'Введите запрещенный продукт';
+    document.getElementById('editFields').appendChild(newInput);
+  } else {
+    alert('Пожалуйста, заполните предыдущее поле перед добавлением нового.');
+  }
+
+
+
+  document.getElementById('saveBtn').addEventListener('click', function() {
+  // Получаем значение поля "Количество людей"
+  var peopleCount = document.getElementById('peopleInput').value;
+
+  // Получаем список всех запрещенных продуктов
+  var forbiddenProducts = [];
+  var inputs = document.querySelectorAll('#editFields input[type="text"]');
+  inputs.forEach(function(input) {
+    if (input.value.trim() !== '') {
+      forbiddenProducts.push(input.value);
+    }
+  });
+
+  // Очищаем предыдущие значения в localstorage
+  localStorage.removeItem('peopleCount');
+  localStorage.removeItem('forbiddenProducts');
+
+  // Сохраняем новые значения в localstorage
+  localStorage.setItem('peopleCount', peopleCount);
+  localStorage.setItem('forbiddenProducts', JSON.stringify(forbiddenProducts));
+});
+}
+
+
+document.getElementById('generateMenuBtn').addEventListener('click', function() {
+
+
+var peopleCount = localStorage.getItem('peopleCount');
+var forbiddenProducts = localStorage.getItem('forbiddenProducts');
+
+// Объединяем данные в объект
+var combinedData = { peopleCount: peopleCount, forbiddenProducts: forbiddenProducts };
+
+// Отправляем данные на сервер Flask
+fetch('/', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(combinedData)
+})
+.then(response => response.json())
+.then(data => {
+  console.log('Success:', data);
+})
+.catch((error) => {
+  console.error('Error:', error);
+});
+
+
+
+var breakfast = "{{ breakfast }}";
+var lunch = "{{ lunch }}";
+var dinner = "{{ dinner }}";
+var snack = "{{ snack }}";
+
+//console.log("Breakfast:", breakfast);
+//console.log("Lunch:", lunch);
+//console.log("Dinner:", dinner);
+//console.log("Snack:", snack);
+
+//Очищаем предыдущее
+localStorage.removeItem('breakfastMenu');
+localStorage.removeItem('lunchMenu');
+localStorage.removeItem('dinnerMenu');
+localStorage.removeItem('snackMenu');
+
+//Сохраняем сгенерированное
+localStorage.setItem('breakfastMenu', JSON.stringify(breakfast));
+localStorage.setItem('lunchMenu', JSON.stringify(lunch));
+localStorage.setItem('dinnerMenu', JSON.stringify(dinner));
+localStorage.setItem('snackMenu', JSON.stringify(snack));
+
+// Получение и вывод данных в консоль
+//console.log('Breakfast Menu:', JSON.parse(localStorage.getItem('breakfastMenu')));
+//console.log('Lunch Menu:', JSON.parse(localStorage.getItem('lunchMenu')));
+//console.log('Dinner Menu:', JSON.parse(localStorage.getItem('dinnerMenu')));
+//console.log('Dinner Menu:', JSON.parse(localStorage.getItem('snackMenu')));
+
+});
+</script>
+
+<script>
+
+</script>
+
+
+
+</body>
+</html>
